@@ -1,0 +1,25 @@
+%{
+%}
+DIGIT [1-9]
+VAR  [A-Z]
+SYMB ["+"|"~"|"*"|"/"]
+var [a-z]
+LOOPS {SYMB}{var}|{SYMB}{DIGIT}
+ACCEPTED_STARTS {VAR}"="{var}{SYMB}{var}{LOOPS}*";"|{VAR}"="{DIGIT}{SYMB}{var}{LOOPS}*";"|{VAR}"="{var}{SYMB}{DIGIT}{LOOPS}*";"|{VAR}"="{DIGIT}{SYMB}{DIGIT}{LOOPS}*";"
+%%
+{ACCEPTED_STARTS} {printf( "Valid Expression: %s  \n", yytext );}
+. printf( "Unrecognized character: %s\n", yytext );                         
+%%
+int main( argc, argv )
+int argc;
+char **argv;
+{
+++argv, --argc; 
+if ( argc > 0 )
+yyin = fopen( argv[0], "r" );
+else
+yyin = stdin;
+yylex();
+}
+
+
