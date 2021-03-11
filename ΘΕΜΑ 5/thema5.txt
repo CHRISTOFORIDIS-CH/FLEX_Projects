@@ -1,0 +1,30 @@
+%{
+
+%}
+ID [A-H]
+SHAPES  "angle"{ID}|"line"{ID}{ID}|"trio"{ID}{ID}{ID}|"square"{ID}{ID}{ID}{ID}|"pent"{ID}{ID}{ID}{ID}{ID}|"hex"{ID}{ID}{ID}{ID}{ID}{ID}|"hept"{ID}{ID}{ID}{ID}{ID}{ID}{ID}|"oct"{ID}{ID}{ID}{ID}{ID}{ID}{ID}{ID}
+%%
+{SHAPES} {int i; int j; for (i = 0; i <= yyleng; i++) {
+                            for (j = i + 1; j < yyleng; j++){  
+                              if(yytext[i] == yytext[j]){
+                                   /* duplicate letter in string */
+                                   REJECT; }
+                                    }
+                                   }
+                            printf( "Valid Expression: %s  \n", yytext ); }
+[A-Z]+                   {  printf( "Invalid Expression because of:  %s \n", yytext ); }
+
+. printf( "Unrecognized Character: %s\n", yytext );
+%%
+int main( argc, argv )
+int argc;
+char **argv;
+{
+++argv, --argc; 
+if ( argc > 0 )
+yyin = fopen( argv[0], "r" );
+else
+yyin = stdin;
+
+yylex();
+}
